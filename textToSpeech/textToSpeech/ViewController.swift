@@ -12,6 +12,14 @@ import AVFoundation
 class ViewController: UIViewController {
 
     @IBOutlet weak var txtInput: UITextField!
+    @IBOutlet weak var btnUS: DLRadioButton! //American English (en-US)
+    @IBOutlet weak var btnGB: DLRadioButton! //British English (en-GB)
+    @IBOutlet weak var btnAU: DLRadioButton! //Australian English (en-AU)
+    @IBOutlet weak var btnIE: DLRadioButton! //Irish English (en-IE)
+    @IBOutlet weak var btnZA: DLRadioButton! //South African English (en-ZA)
+    
+    var selectedAccent = "en-US"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         txtInput.becomeFirstResponder()
@@ -41,13 +49,33 @@ class ViewController: UIViewController {
     
     func textToSpeech(txt: String){
         let utterance = AVSpeechUtterance(string: txt)
-        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        utterance.voice = AVSpeechSynthesisVoice(language: selectedAccent)
         //utterance.rate = 0.1
         
         let synthesizer = AVSpeechSynthesizer()
         synthesizer.speak(utterance)
         
         txtInput.becomeFirstResponder()
+    }
+    
+    @objc @IBAction private func selectedLanguage(radioButton : DLRadioButton) {
+        print(String(format: "%@ is selected.\n", radioButton.selected()!.titleLabel!.text!));
+        let selected = radioButton.selected()!.titleLabel!.text!
+        if(selected == "American English (en-US)"){
+            selectedAccent = "en-US"
+        }
+        else if(selected == "British English (en-GB)"){
+            selectedAccent = "en-GB"
+        }
+        else if(selected == "Australian English (en-AU)"){
+            selectedAccent = "en-AU"
+        }
+        else if(selected == "Irish English (en-IE)"){
+            selectedAccent = "en-IE"
+        }
+        else{
+            selectedAccent = "en-ZA"
+        }
     }
     
     @objc func dismissKeyboard() {
